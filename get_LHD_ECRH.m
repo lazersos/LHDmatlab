@@ -1,6 +1,6 @@
 function [time, PECRH] = get_LHD_ECRH(shotnum)
 %GET_LHD_WP Returns LHD data from webservice
-%   This routine returns a time vector and diagmangetic energy vector (J)
+%   This routine returns a time vector and total ECRH power (MW)
 %   for a given discharge on LHD.  It uses the LHD webservice 
 %   https://exp.lhd.nifs.ac.jp/opendata/LHD/ for accessing the data.
 %

@@ -1,4 +1,4 @@
-function [time, R, nel] = get_LHD_fir(shotnum)
+function [time, R, nel,ne_bar] = get_LHD_fir(shotnum)
 %GET_LHD_FIR Returns LHD data from webservice
 %   This routine returns a time vector, Radius vector (m), and line 
 %   integrated density vector (m^-2).  
@@ -33,6 +33,7 @@ fltdata=sscanf(temp(end),'%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E,%E',[16, 
 time = fltdata(1,:);
 R = [3309, 3399, 3489, 3479 3669, 3759, 3849, 3939, 4029, 4119, 4209, 4299, 4389]./1000;
 nel = fltdata(4:end,:).*1E19;
+ne_bar = fltdata(3,:);
 
 
 end

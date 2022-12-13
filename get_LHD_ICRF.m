@@ -1,6 +1,7 @@
 function [time,PICRH_35,PICRH_45, PICRH_tot] = get_LHD_ICRF(shotnum)
 %GET_LHD_WP Returns LHD data from webservice
-%   This routine returns a time vector and diagmangetic energy vector (J)
+%   This routine returns a time vector and total ICRF power (MW), as well
+%   as power from individual antennas in ports 3.5 and 4.5
 %   for a given discharge on LHD.  It uses the LHD webservice 
 %   https://exp.lhd.nifs.ac.jp/opendata/LHD/ for accessing the data.
 %

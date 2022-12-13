@@ -1,26 +1,21 @@
-function [time, R, I] = get_LHD_cxs8int(shotnum)
-%GET_LHD_LHD_cxs8int Returns LHD impurity intensity daat from the CXS8
-%system
-%   This routine returns Thomson measured data in the form of a time
-%   vector, radius vector (m), and intensity of impurity radiation (a.u.). 
-%   It uses the LHD webservice 
+function [time, P] = get_LHD_nbi4b(shotnum)
+%   GET_LHD_nbi4a Returns the power of NBI source 4a. It uses the LHD webservice 
 %   https://exp.lhd.nifs.ac.jp/opendata/LHD/ for accessing the data.
 %
 %   Example
-%       [time, R, I] = get_LHD_cxs8int(shotnum);
+%       [time, P] = get_LHD_nbi4b(164423);
 %
 %   Created by: Dmitry Moseev (dmitry.moseev@ipp.mpg.de)
 %   Version:    1.0
-%   Date:       12.11.2022
+%   Date:       07.12.2022
 
 time=[];
-R = [];
-I = [];
+P = [];
 
 % Generic way to get string data
 base_url = 'https://exp.lhd.nifs.ac.jp/opendata/LHD/webapi.fcgi';
 cmd='getfile';
-diag = 'lhdcxs8_int';
+diag = 'nb4bpwr_temporal';
 shot=num2str(shotnum,'%i');
 subno = num2str(1,'%i');
 url = [base_url '?cmd=' cmd '&diag=' diag '&shotno=' shot '&subno=' subno];
@@ -31,13 +26,12 @@ strdata=string(rawdata);
 % Now need to dissect
 temp=split(strdata,'[data]'); % last element contains data
 %header = temp(1)
-% fltdata=sscanf(temp(end),'%f,%f,%f,',[3, Inf]);
-fltdata = str2num(temp(end))';
+fltdata = str2num(temp(end));
+fltdata = fltdata';
+
 
 % Return values
-time=unique(fltdata(1,:));
-R = unique(fltdata(2,:))./1000;
-dimsize=[length(R),length(time)];
-I = reshape(fltdata(3,:),dimsize);
+time=fltdata(1,:);
+P = fltdata(3,:);
 
 end
