@@ -6,7 +6,7 @@ function [time,PICRH_35,PICRH_45, PICRH_tot] = get_LHD_ICRF(shotnum)
 %   https://exp.lhd.nifs.ac.jp/opendata/LHD/ for accessing the data.
 %
 %   Example
-%       [time,Wp] = get_LHD_wp(164423);
+%       [time,PICRH_35,PICRH_45, PICRH_tot] = get_LHD_ICRF(164423);
 %
 %   Created by: D. Moseev (dmitry.moseev@ipp.mpg.de)
 %   Version:    1.0

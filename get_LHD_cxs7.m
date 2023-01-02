@@ -1,7 +1,7 @@
 function [time, R, ti, dti, Vc, dVc] = get_LHD_cxs7(shotnum)
 %GET_LHD_THOMSON Returns LHD stored energy data
 %   This routine returns Thomson measured data in the form of a time
-%   vector, radius vector (m), ion temperature (ev), temperature
+%   vector, Reff/a99, ion temperature (ev), temperature
 %   error (ev), rotation velocity (m/s), and rotation velocity error
 %   (m/s). It uses the LHD webservice 
 %   https://exp.lhd.nifs.ac.jp/opendata/LHD/ for accessing the data.
@@ -45,7 +45,7 @@ dimsize = dimsize(length(dimsize):-1:1);
 
 % Return values
 time=unique(fltdata(1,:));
-R = fltdata(2,1:dimsize(1));
+R = fltdata(11,1:dimsize(1))/fltdata(12,1);
 % R = R(1:length(R)/length(time));
 % dimsize=[length(R),length(time)];
 ti = reshape(fltdata(4,:),dimsize);

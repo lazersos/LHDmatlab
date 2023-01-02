@@ -1,27 +1,27 @@
-function [time, frq, spec1, spec2] = get_LHD_ICE2(shotnum)
-%GET_LHD_ICE2 Returns LHD ICE spectrograms in teh range of several hundred
-%of MHz. The data come from two probes in port 5.5u (spec1) and 6.5u
-%(spec2)
-%   
-% It uses the LHD webservice 
+function [time, ch, d1, d2, d3, d4] = get_LHD_DNPA(shotnum)
+%GET_LHD_DNPA Returns LHD neutral partcle analyzer data in counts in 4
+%spatial channels (d1,d2,d3,d4)
+%   It uses the LHD webservice 
 %   https://exp.lhd.nifs.ac.jp/opendata/LHD/ for accessing the data.
 %
 %   Example
-%       [time, frq, spec1, spec2] = get_LHD_ICE2(164423);
+%       [time, ch, d1, d2, d3, d4] = get_LHD_DNPA(186009);
 %
 %   Created by: Dmitry Moseev (dmitry.moseev@ipp.mpg.de)
 %   Version:    1.0
 %   Date:       14.11.2022
 
 time=[];
-frq = [];
-spec1 = [];
-spec2 = [];
+ch = [];
+d1 = [];
+d2 = [];
+d3 = [];
+d4 = [];
 
 % Generic way to get string data
 base_url = 'https://exp.lhd.nifs.ac.jp/opendata/LHD/webapi.fcgi';
 cmd='getfile';
-diag = 'ICH-ICE2';
+diag = 'DNPA';
 shot=num2str(shotnum,'%i');
 subno = num2str(1,'%i');
 url = [base_url '?cmd=' cmd '&diag=' diag '&shotno=' shot '&subno=' subno];
@@ -34,21 +34,22 @@ temp=split(strdata,'[data]'); % last element contains data
 %header = temp(1)
 % fltdata=sscanf(temp(end),'%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f',[23, Inf]);
 fltdata = str2num(temp(end))';
+temp1 = split(temp(1),'DimSize = ');
+temp1 = split(temp1(2),'DimUnit = ');
+temp1 = temp1{1};
+temp1 = temp1(1:end-3);
+dimsize = str2num(temp1);
+dimsize = dimsize(length(dimsize):-1:1);
+
 
 % Return values
 time=unique(fltdata(1,:));
-frq = unique(fltdata(2,:));
+ch = fltdata(2,1:dimsize(1));
 % R = R(1:length(R)/length(time));
 % dimsize=[length(R),length(time)];
-ti = reshape(fltdata(4,:),dimsize);
-dti = reshape(fltdata(5,:),dimsize);
-Vc = reshape(fltdata(6,:),dimsize);
-dVc = reshape(fltdata(7,:),dimsize);
-
-R = R(3:end-3);
-ti = ti(3:end-3,:);
-dti = dti(3:end-3,:);
-Vc = Vc(3:end-3,:);
-dVc = dVc(3:end-3,:);
+d1 = reshape(fltdata(3,:),dimsize);
+d2 = reshape(fltdata(4,:),dimsize);
+d3 = reshape(fltdata(5,:),dimsize);
+d4 = reshape(fltdata(6,:),dimsize);
 
 end
